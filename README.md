@@ -3,7 +3,7 @@ This repository consists of four seperate projects:
 - [Graph simulation with pipe and fifo](#graph)
 - [Message Queues](#message)
 - [Quiz with TCP](#quiz)
-- 
+- [Producer-consumer with shared memory](#producer-consumer)
 
 
 ## Graph simulation with pipe and fifo
@@ -32,6 +32,24 @@ Processors waits for messages at most one second - if no messages have been read
 the latest message it has read.
 
 ## Quiz with TCP
+
+Server is run with address, port, path to the file with questions and maximum number of clients given as the arguments.
+Server reads all of the questions from the file and accepts clients on the given port and address. If number of the connected clients
+exceeds the number of maximum clients, it responds to the client waiting for the connection with refusal.
+Server sends parts of the question to each of the connected clients three times per second. For every client server 
+randomizes the number of characters to send in the current transfer. If no question is "in progress", it also randomizes which question is going
+to be send to the certain client. If all characters of the question have been sent to the client, server waits with sending the next question
+until it receives a response. Server ends with a SIGINT.
+
+Client is run with <port, address> pairs of arguments for each server it is going to contact. Client receives parts of the questions
+from each server. When the whole question has been received, it is printed and program waits for user's answer that is later sent to the server.
+If user tries to enter an answer before the question has been received completely, it prints out a reminder that user should wait for the question.
+Client program ends when all of the servers end connection.
+If a question from the other server is completed while client is waiting for the user's input, client sends to the first server a '0' response
+and proceeds with the next question.
+
+## Producer-consumer with shared memory
+
 
 ## Technologies
 - C
