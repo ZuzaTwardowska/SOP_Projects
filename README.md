@@ -3,7 +3,7 @@ This repository consists of four seperate projects:
 - [Graph simulation with pipe and fifo](#graph)
 - [Message Queues](#message)
 - [Quiz with TCP](#quiz)
-- [Producer-consumer with shared memory](#producer-consumer)
+- [Producer-consumer with shared memory and semaphores](#producer-consumer)
 
 
 ## Graph simulation with pipe and fifo
@@ -48,8 +48,16 @@ Client program ends when all of the servers end connection.
 If a question from the other server is completed while client is waiting for the user's input, client sends to the first server a '0' response
 and proceeds with the next question.
 
-## Producer-consumer with shared memory
+## Producer-consumer with shared memory and semaphores
 
+Program can work in two modes: -p producer or -k consumer. Program instances communicate with each other via 10 element array of strings in shared memory.
+Synchronization is achieved with semaphores.
+
+Producers read messages from TCP clients in seperate threads and places them in the shared memory. When the message is places in the
+shared memory, one of the consumers reads the message and rotates it. Then the rotated message is put back in the same place in the shared memory.
+When the rotated message is returned, one of the producers reads and prints out the message.
+
+Multiple producers and consumers may work with the same shared memory due to synchonization. Program is controlled with SIGINT.
 
 ## Technologies
 - C
